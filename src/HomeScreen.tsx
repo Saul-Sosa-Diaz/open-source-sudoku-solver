@@ -1,9 +1,9 @@
 import { Grid } from "./components/grid";
-import { ButtonContainer, ButtonStyled, DropdownStyled, MainContainer, Title } from "./HomeScreen.styles";
-import { Dropdown } from 'primereact/dropdown';
-import { resolveSudoku } from "./utils/resolveSudoku";
+import { ButtonContainer, ButtonStyled, DropdownStyled, MainContainer, Title, Wrapper } from "./HomeScreen.styles";
 import { useEffect, useState } from "react";
 import { generateSudoku } from "./utils/generateSudoku";
+import { Footer } from "./components/footer";
+
 
 
 // [
@@ -39,6 +39,7 @@ export const HomeScreen = () => {
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]);
+    const [resolvedSudoku, setResolvedSudoku] = useState<number[][]>([]);
     const [difficulty, setDifficulty] = useState<number>(50);
     const [difficultyOptions] = useState([
         { label: 'Easy 😴', value: 30 },
@@ -48,40 +49,43 @@ export const HomeScreen = () => {
     ]);
     useEffect(() => {
         const generateSudokuAsync = async () => {
-            const generatedSudoku = await generateSudoku(difficulty);
+            const { generatedSudoku, resolvedSudoku } = await generateSudoku(difficulty);
             setSudoku(generatedSudoku);
+            setResolvedSudoku(resolvedSudoku);
         }
         generateSudokuAsync();
     }, []);
 
     const resolveHandleClick = async () => {
-        const clonedSudoku = sudoku.map(row => [...row]);
-        const resolved = await resolveSudoku(clonedSudoku);
-        console.log('resolved', resolved);
-        setSudoku(resolved);
+        const clonedSudoku = resolvedSudoku.map(row => [...row]);
+        setSudoku(clonedSudoku);
     };
 
     const generateHandleClick = async () => {
-        const generatedSudoku = await generateSudoku(difficulty);
+        const { generatedSudoku, resolvedSudoku } = await generateSudoku(difficulty);
         setSudoku(generatedSudoku);
+        setResolvedSudoku(resolvedSudoku);
     };
 
     console.log('sudoku', sudoku);
     return (
-        <MainContainer>
-            <Title>Sudoku Online</Title>
-            <Grid values={sudoku} />
-            <ButtonContainer>
-                <ButtonStyled onClick={generateHandleClick}> Generate </ButtonStyled>
-                <ButtonStyled onClick={resolveHandleClick}> Resolve </ButtonStyled>
-            </ButtonContainer>
+        <Wrapper>
+            <MainContainer>
+                <Title>Sudoku Online</Title>
+                <Grid values={sudoku} />
+                <ButtonContainer>
+                    <ButtonStyled onClick={generateHandleClick}> Generate </ButtonStyled>
+                    <ButtonStyled onClick={resolveHandleClick}> Resolve </ButtonStyled>
+                </ButtonContainer>
 
-            <DropdownStyled
-                appendTo={"self"}
-                value={difficulty}
-                onChange={(e) => setDifficulty(e.value)}
-                options={difficultyOptions}
-            />
-        </MainContainer>
+                <DropdownStyled
+                    appendTo={"self"}
+                    value={difficulty}
+                    onChange={(e) => setDifficulty(e.value)}
+                    options={difficultyOptions}
+                />
+            </MainContainer>
+            <Footer />
+        </Wrapper>
     );
 }

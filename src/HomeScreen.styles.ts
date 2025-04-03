@@ -1,14 +1,17 @@
 import { styled } from '@stitches/react'
 import { COLORS } from './constants/colors'
 import { Button } from 'primereact/button'
-import { Slider } from 'primereact/slider'
 import { Dropdown } from 'primereact/dropdown'
+
+export const Wrapper = styled('div', {
+  minHeight: '100vh',
+  display: 'flex',
+  flexDirection: 'column',
+})
 
 export const MainContainer = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  width: '100%',
-  minHeight: '100vh',
   flex: 1,
   alignItems: 'center',
 })
@@ -17,6 +20,8 @@ export const Title = styled('h1', {
   fontSize: '3rem',
   color: COLORS['main-100'],
   margin: '0',
+  marginTop: '2rem',
+  marginBottom: '2rem',
   padding: '0',
 })
 
