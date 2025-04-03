@@ -1,4 +1,5 @@
 import { createStitches } from '@stitches/react'
+import { COLORS } from './constants/colors'
 
 export const { theme, styled, globalCss } = createStitches({
   theme: {
@@ -11,6 +12,9 @@ export const { theme, styled, globalCss } = createStitches({
 export const globalStyles = globalCss({
   body: {
     margin: 0,
+    padding: 0,
+    backgroundColor: COLORS['main-300'],
+    fontFamily: 'Montserrat, sans-serif',
   },
 })
 
