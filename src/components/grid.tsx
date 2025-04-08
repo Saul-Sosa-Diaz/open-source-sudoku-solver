@@ -6,7 +6,7 @@ type GridProps = {
 }
 
 
-export const Grid = ({ values }: GridProps) => {
+export const Grid = ({ values, onChange }: GridProps & { onChange: (row: number, col: number, value: number) => void }) => {
     const sideSize = values.length;
     const numberRows = sideSize;
     const numberColumns = sideSize;
@@ -14,12 +14,12 @@ export const Grid = ({ values }: GridProps) => {
     const colDivisions = Math.floor(numberColumns / 3);
 
     return (
-        < StyledGrid style={{
+        <StyledGrid style={{
             gridTemplateColumns: `repeat(${numberColumns}, 1fr)`,
             gridTemplateRows: `repeat(${numberRows}, 1fr)`,
-        }} >
+        }}>
             {values.map((_, row) =>
-                values[row].map((_, col) => {
+                values[row].map((cellValue, col) => {
                     const isTopBorder = (row % rowDivisions === 0) && row !== 0;
                     const isLeftBorder = col % colDivisions === 0 && col !== 0;
 
@@ -32,10 +32,33 @@ export const Grid = ({ values }: GridProps) => {
                                 borderLeft: isLeftBorder ? '2px solid black' : '1px solid #ccc',
                             }}
                         >
-                            {values[row][col] !== 0 ? values[row][col] : ""}
+                            <input
+                                type="text"
+                                maxLength={1}
+                                value={cellValue === 0 ? '' : cellValue}
+                                onChange={(e) => {
+                                    const val = e.target.value;
+                                    const number = parseInt(val, 10);
+                                    if (!isNaN(number) && number >= 1 && number <= 9) {
+                                        onChange(row, col, number);
+                                    } else if (val === '') {
+                                        onChange(row, col, 0);
+                                    }
+                                }}
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    border: 'none',
+                                    textAlign: 'center',
+                                    fontSize: '1.5rem',
+                                    background: 'transparent',
+                                    outline: 'none',
+                                }}
+                            />
                         </Cell>
-                    )})
+                    );
+                })
             )}
-        </StyledGrid >
+        </StyledGrid>
     );
-}
+};

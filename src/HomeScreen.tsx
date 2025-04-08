@@ -1,91 +1,111 @@
-import { Grid } from "./components/grid";
-import { ButtonContainer, ButtonStyled, DropdownStyled, MainContainer, Title, Wrapper } from "./HomeScreen.styles";
-import { useEffect, useState } from "react";
-import { generateSudoku } from "./utils/generateSudoku";
-import { Footer } from "./components/footer";
+import { Grid } from './components/grid'
+import {
+  ButtonContainer,
+  ButtonStyled,
+  DropdownStyled,
+  InvalidSudokuMessage,
+  MainContainer,
+  Title,
+  ValidSudokuMessage,
+  Wrapper,
+} from './HomeScreen.styles'
+import { useEffect, useState } from 'react'
+import { generateSudoku } from './utils/generateSudoku'
+import { Footer } from './components/footer'
+import { checkSudokuIsValid } from './utils/resolveSudoku'
+import { triggerConfettiAnimation } from './utils/confetti'
 
-
-
-// [
-//     [5, 3, 0, 0, 7, 0, 0, 0, 0],
-//     [6, 0, 0, 1, 9, 5, 0, 0, 0],
-//     [0, 9, 8, 0, 0, 0, 0, 6, 0],
-//     [8, 0, 0, 0, 6, 0, 0, 0, 3],
-//     [4, 0, 0, 8, 0, 3, 0, 0, 1],
-//     [7, 0, 0, 0, 2, 0, 0, 0, 6],
-//     [0, 6, 0, 0, 0, 0, 2, 8, 0],
-//     [0, 0, 0, 4, 1, 9, 0, 0, 5],
-//     [0, 0, 0, 0, 8, 0, 0, 7, 9]
-// ]
-
-// [0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [0, 0, 0, 1, 9, 5, 0, 0, 0],
-//     [0, 9, 8, 0, 0, 0, 0, 6, 0],
-//     [8, 0, 0, 0, 6, 0, 0, 0, 3],
-//     [4, 0, 0, 8, 0, 3, 0, 0, 1],
-//     [7, 0, 0, 0, 2, 0, 0, 0, 6],
-//     [0, 6, 0, 0, 0, 0, 2, 8, 0],
-//     [0, 0, 0, 4, 1, 9, 0, 0, 5],
-//     [0, 0, 0, 0, 0, 0, 0, 7, 9]
 export const HomeScreen = () => {
-    const [sudoku, setSudoku] = useState<number[][]>([
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ]);
-    const [resolvedSudoku, setResolvedSudoku] = useState<number[][]>([]);
-    const [difficulty, setDifficulty] = useState<number>(50);
-    const [difficultyOptions] = useState([
-        { label: 'Easy 😴', value: 30 },
-        { label: 'Normal 🎮', value: 50 },
-        { label: 'Hard 🥵', value: 70 },
-        { label: 'Impossible ☠️', value: 90 },
-    ]);
-    useEffect(() => {
-        const generateSudokuAsync = async () => {
-            const { generatedSudoku, resolvedSudoku } = await generateSudoku(difficulty);
-            setSudoku(generatedSudoku);
-            setResolvedSudoku(resolvedSudoku);
-        }
-        generateSudokuAsync();
-    }, []);
+  const [sudoku, setSudoku] = useState<number[][]>([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ])
 
-    const resolveHandleClick = async () => {
-        const clonedSudoku = resolvedSudoku.map(row => [...row]);
-        setSudoku(clonedSudoku);
-    };
+  const [resolvedSudoku, setResolvedSudoku] = useState<number[][]>([])
+  const [difficulty, setDifficulty] = useState<number>(50)
+  const [difficultyOptions] = useState([
+    { label: 'Easy 😴', value: 30 },
+    { label: 'Normal 🎮', value: 50 },
+    { label: 'Hard 🥵', value: 70 },
+    { label: 'Impossible ☠️', value: 90 },
+  ])
+  const [isValid, setIsValid] = useState(false)
+  const [hasCheckedSudoku, setHasCheckedSudoku] = useState(false)
 
-    const generateHandleClick = async () => {
-        const { generatedSudoku, resolvedSudoku } = await generateSudoku(difficulty);
-        setSudoku(generatedSudoku);
-        setResolvedSudoku(resolvedSudoku);
-    };
+  useEffect(() => {
+    const generateSudokuAsync = async () => {
+      const { generatedSudoku, resolvedSudoku } = await generateSudoku(difficulty)
+      setSudoku(generatedSudoku)
+      setResolvedSudoku(resolvedSudoku)
+    }
+    generateSudokuAsync()
+  }, [])
 
-    console.log('sudoku', sudoku);
-    return (
-        <Wrapper>
-            <MainContainer>
-                <Title>Sudoku Online</Title>
-                <Grid values={sudoku} />
-                <ButtonContainer>
-                    <ButtonStyled onClick={generateHandleClick}> Generate </ButtonStyled>
-                    <ButtonStyled onClick={resolveHandleClick}> Resolve </ButtonStyled>
-                </ButtonContainer>
+  const resolveHandleClick = async () => {
+    const clonedSudoku = resolvedSudoku.map((row) => [...row])
+    setSudoku(clonedSudoku)
+  }
 
-                <DropdownStyled
-                    appendTo={"self"}
-                    value={difficulty}
-                    onChange={(e) => setDifficulty(e.value)}
-                    options={difficultyOptions}
-                />
-            </MainContainer>
-            <Footer />
-        </Wrapper>
-    );
+  const generateHandleClick = async () => {
+    const { generatedSudoku, resolvedSudoku } = await generateSudoku(difficulty)
+    setSudoku(generatedSudoku)
+    setResolvedSudoku(resolvedSudoku)
+    setIsValid(false)
+    setHasCheckedSudoku(false)
+  }
+
+  const handleCellChange = (row: number, col: number, value: number) => {
+    const newGrid = sudoku.map((r, rowIndex) =>
+      r.map((cell, colIndex) => (rowIndex === row && colIndex === col ? value : cell)),
+    )
+    setSudoku(newGrid)
+  }
+
+  const handleCheckSudoku = async () => {
+    const sudokuToCheck = sudoku.map((row) => [...row])
+    setHasCheckedSudoku(true)
+    const isValid = await checkSudokuIsValid(sudokuToCheck)
+    if (isValid) {
+      triggerConfettiAnimation()
+      setIsValid(true)
+    } else {
+      setIsValid(false)
+    }
+  }
+
+  return (
+    <Wrapper>
+      <MainContainer>
+        <Title>Sudoku Online</Title>
+        <Grid values={sudoku} onChange={handleCellChange} />
+        {hasCheckedSudoku && (
+          <>
+            {!isValid && <InvalidSudokuMessage>Invalid Sudoku...</InvalidSudokuMessage>}
+            {isValid && <ValidSudokuMessage>Sudoku is valid! 🎉🎉🎉</ValidSudokuMessage>}
+          </>
+        )}
+        <ButtonContainer>
+          <ButtonStyled onClick={generateHandleClick}> Generate </ButtonStyled>
+          <DropdownStyled
+            appendTo={'self'}
+            value={difficulty}
+            onChange={(e) => setDifficulty(e.value)}
+            options={difficultyOptions}
+          />
+        </ButtonContainer>
+        <ButtonContainer>
+          <ButtonStyled onClick={handleCheckSudoku}> Check </ButtonStyled>
+          <ButtonStyled onClick={resolveHandleClick}> Solve </ButtonStyled>
+        </ButtonContainer>
+      </MainContainer>
+      <Footer />
+    </Wrapper>
+  )
 }

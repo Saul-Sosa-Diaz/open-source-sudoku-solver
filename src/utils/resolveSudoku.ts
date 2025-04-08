@@ -26,6 +26,22 @@ const checkIfValid = (sudoku: number[][], row: number, column: number) => {
     return true
 }
 
+export const checkSudokuIsValid = async (sudoku: number[][]) => {
+    for (let row = 0; row < sudoku.length; row++) {
+        for (let column = 0; column < sudoku.length; column++) {
+            if (sudoku[row][column] !== 0) {
+                const isValid = checkIfValid(sudoku, row, column)
+                if (!isValid) {
+                    return false
+                }
+            } else {
+              return false 
+            }
+        }
+    }
+    return true
+}
+
 
 export const resolveSudoku = async (sudoku: number[][]) => {
   // 1. Encontrar una celda vacia

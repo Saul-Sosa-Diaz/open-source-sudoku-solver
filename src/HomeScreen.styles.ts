@@ -25,10 +25,30 @@ export const Title = styled('h1', {
   padding: '0',
 })
 
+const BaseSudokuMessage = styled('h2', {
+  fontSize: '2rem',
+  margin: '0',
+  marginTop: '2rem',
+  padding: '0',
+  textAlign: 'center',
+})
+
+export const InvalidSudokuMessage = styled(BaseSudokuMessage, {
+  color: COLORS['accent-red'],
+})
+
+export const ValidSudokuMessage = styled(BaseSudokuMessage, {
+  color: COLORS['accent-green'],
+})
+
 export const ButtonContainer = styled('div', {
   display: 'flex',
   gap: '1rem',
   marginTop: '2rem',
+  alignContent: 'center',
+  justifyContent: 'center',
+  width: '22%',
+
 })
 
 export const DropdownStyled = styled(Dropdown, {
@@ -36,8 +56,11 @@ export const DropdownStyled = styled(Dropdown, {
   color: COLORS['main-300'],
   border: 'none',
   borderRadius: '8px',
-  marginTop: '1rem',
   fontWeight: 'bold',
+  alignContent: 'center',
+  display: 'flex',
+  flex: 1,
+  justifyContent: 'center',
   padding: '1rem',
   fontSize: '1.5rem',
   cursor: 'pointer',
@@ -80,6 +103,10 @@ export const ButtonStyled = styled(Button, {
   backgroundColor: COLORS['main-100'],
   color: COLORS['main-300'],
   border: 'none',
+  flex: 1,
+  display: 'flex',
+  justifyContent: 'center',
+  alignContent: 'center',
   borderRadius: '8px',
   padding: '1rem 2rem',
   fontSize: '1.5rem',
