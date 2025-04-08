@@ -48,6 +48,7 @@ export const ButtonContainer = styled('div', {
   alignContent: 'center',
   justifyContent: 'center',
   width: '22%',
+  minWidth: '400px',
 
 })
 
@@ -109,7 +110,7 @@ export const ButtonStyled = styled(Button, {
   alignContent: 'center',
   borderRadius: '8px',
   padding: '1rem 2rem',
-  fontSize: '1.5rem',
+  fontSize: '1.5em',
   cursor: 'pointer',
   '&:hover': {
     backgroundColor: COLORS['main-200'],
