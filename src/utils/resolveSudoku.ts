@@ -32,22 +32,18 @@ export const checkSudokuIsValid = async (sudoku: number[][]) => {
             if (sudoku[row][column] !== 0) {
                 const isValid = checkIfValid(sudoku, row, column)
                 if (!isValid) {
+                   console.log('sudoku not valid', row, column)
                     return false
                 }
-            } else {
-              return false 
-            }
+            } 
         }
     }
+   
     return true
 }
 
 
-export const resolveSudoku = async (sudoku: number[][]) => {
-  // 1. Encontrar una celda vacia
-  // 2. Poner un número en ella
-  // 3. Comprobar si es válido
-  // 4. Si es válido llamar a resolver sudoku, si no devolver
+export const resolveSudoku = async (sudoku: number[][]): Promise<number[][] | boolean> => {
   const tempSudoku = sudoku
   let emptyCellPosition: CellPosition = { row: -1, column: -1 }
   let foundEmptyCell = false
@@ -60,23 +56,23 @@ export const resolveSudoku = async (sudoku: number[][]) => {
     }
   }
   if (emptyCellPosition.row === -1 && emptyCellPosition.column === -1) {
-    return tempSudoku // esto está lleno
+    return tempSudoku // Sudoku is solved 
   }
   const possiblesValues = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-  // Comprobar ahora con todos los valores posibles
+  
   while (possiblesValues.length > 0) {
+
     const randomIndex = Math.floor(Math.random() * possiblesValues.length)
     const possibleValues = possiblesValues.splice(randomIndex, 1)
     tempSudoku[emptyCellPosition.row][emptyCellPosition.column] = possibleValues[0]
     const isValid = checkIfValid(tempSudoku, emptyCellPosition.row, emptyCellPosition.column)
-
     if (isValid) {
-      const result = await resolveSudoku(tempSudoku)
+      const result = await resolveSudoku(tempSudoku) // backtracking
       if (result) {
         return result
       }
     }
-    // Si no es válido, volver a poner 0
     tempSudoku[emptyCellPosition.row][emptyCellPosition.column] = 0
   }
+  return false // No solution found
 }

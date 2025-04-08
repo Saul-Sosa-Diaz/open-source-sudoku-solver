@@ -62,18 +62,31 @@ export const HomeScreen = () => {
       const emptySudokuGrid = Array.from({ length: 9 }, () => Array(9).fill(0))
       setSudoku(emptySudokuGrid)
       setInitialSudoku(emptySudokuGrid)
-    } 
+    }
   }, [emptySudoku])
 
   const resolveHandleClick = async () => {
-    let sudokuToResolve 
+    let sudokuToResolve
     if (emptySudoku) {
-      sudokuToResolve = initialSudoku.map((row) => [...row])
-    } else {
       sudokuToResolve = sudoku.map((row) => [...row])
+      const isValid = await checkSudokuIsValid(sudokuToResolve)
+      if(!isValid){
+        setIsValid(false)
+        setHasCheckedSudoku(true)
+        return
+      }
+    } else {
+      sudokuToResolve = initialSudoku.map((row) => [...row])
     }
+
     const resolvedSudoku = await resolveSudoku(sudokuToResolve)
-    setSudoku(resolvedSudoku)
+    if (!resolvedSudoku) {
+      setIsValid(false)
+      setHasCheckedSudoku(true)
+      return
+    }
+
+    setSudoku(resolvedSudoku as number[][])
     setIsValid(false)
     setHasCheckedSudoku(false)
   }
@@ -107,8 +120,12 @@ export const HomeScreen = () => {
   }
 
   const handleSetEmptySudoku = async () => {
+    const emptySudoku = Array.from({ length: 9 }, () => Array(9).fill(0))
+    setSudoku(emptySudoku)
+    setInitialSudoku(emptySudoku)
+    setIsValid(false)
+    setHasCheckedSudoku(false)
     setEmptySudoku(true)
-    
   }
 
   return (
