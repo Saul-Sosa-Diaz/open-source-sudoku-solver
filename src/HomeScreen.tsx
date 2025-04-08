@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from 'react'
 import { generateSudoku } from './utils/generateSudoku'
 import { Footer } from './components/footer'
-import { checkSudokuIsValid } from './utils/resolveSudoku'
+import { checkSudokuIsValid, resolveSudoku } from './utils/resolveSudoku'
 import { triggerConfettiAnimation } from './utils/confetti'
 
 export const HomeScreen = () => {
@@ -27,8 +27,8 @@ export const HomeScreen = () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ])
+  const [initialSudoku, setInitialSudoku] = useState<number[][]>([])
 
-  const [resolvedSudoku, setResolvedSudoku] = useState<number[][]>([])
   const [difficulty, setDifficulty] = useState<number>(50)
   const [difficultyOptions] = useState([
     { label: 'Easy 😴', value: 30 },
@@ -36,27 +36,53 @@ export const HomeScreen = () => {
     { label: 'Hard 🥵', value: 70 },
     { label: 'Impossible ☠️', value: 90 },
   ])
+
   const [isValid, setIsValid] = useState(false)
   const [hasCheckedSudoku, setHasCheckedSudoku] = useState(false)
+  const [emptySudoku, setEmptySudoku] = useState<boolean>(false)
 
   useEffect(() => {
     const generateSudokuAsync = async () => {
-      const { generatedSudoku, resolvedSudoku } = await generateSudoku(difficulty)
+      if (emptySudoku) {
+        const emptySudoku = Array.from({ length: 9 }, () => Array(9).fill(0))
+        setSudoku(emptySudoku)
+        setInitialSudoku(emptySudoku)
+        return
+      }
+      const { generatedSudoku } = await generateSudoku(difficulty)
       setSudoku(generatedSudoku)
-      setResolvedSudoku(resolvedSudoku)
+      setInitialSudoku(generatedSudoku)
     }
+
     generateSudokuAsync()
   }, [])
 
+  useEffect(() => {
+    if (emptySudoku) {
+      const emptySudokuGrid = Array.from({ length: 9 }, () => Array(9).fill(0))
+      setSudoku(emptySudokuGrid)
+      setInitialSudoku(emptySudokuGrid)
+    } 
+  }, [emptySudoku])
+
   const resolveHandleClick = async () => {
-    const clonedSudoku = resolvedSudoku.map((row) => [...row])
-    setSudoku(clonedSudoku)
+    let sudokuToResolve 
+    if (emptySudoku) {
+      sudokuToResolve = initialSudoku.map((row) => [...row])
+    } else {
+      sudokuToResolve = sudoku.map((row) => [...row])
+    }
+    const resolvedSudoku = await resolveSudoku(sudokuToResolve)
+    setSudoku(resolvedSudoku)
+    setIsValid(false)
+    setHasCheckedSudoku(false)
   }
 
   const generateHandleClick = async () => {
-    const { generatedSudoku, resolvedSudoku } = await generateSudoku(difficulty)
+    const { generatedSudoku } = await generateSudoku(difficulty)
+    setEmptySudoku(false)
     setSudoku(generatedSudoku)
-    setResolvedSudoku(resolvedSudoku)
+    setInitialSudoku(generatedSudoku)
     setIsValid(false)
     setHasCheckedSudoku(false)
   }
@@ -80,11 +106,16 @@ export const HomeScreen = () => {
     }
   }
 
+  const handleSetEmptySudoku = async () => {
+    setEmptySudoku(true)
+    
+  }
+
   return (
     <Wrapper>
       <MainContainer>
         <Title>Sudoku Online</Title>
-        <Grid values={sudoku} onChange={handleCellChange} />
+        <Grid values={sudoku} onChange={handleCellChange} initialValues={initialSudoku} />
         {hasCheckedSudoku && (
           <>
             {!isValid && <InvalidSudokuMessage>Invalid Sudoku...</InvalidSudokuMessage>}
@@ -103,6 +134,9 @@ export const HomeScreen = () => {
         <ButtonContainer>
           <ButtonStyled onClick={handleCheckSudoku}> Check </ButtonStyled>
           <ButtonStyled onClick={resolveHandleClick}> Solve </ButtonStyled>
+        </ButtonContainer>
+        <ButtonContainer>
+          <ButtonStyled onClick={handleSetEmptySudoku}> Empty Sudoku </ButtonStyled>
         </ButtonContainer>
       </MainContainer>
       <Footer />
