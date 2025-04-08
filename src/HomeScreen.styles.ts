@@ -23,6 +23,12 @@ export const Title = styled('h1', {
   marginTop: '2rem',
   marginBottom: '2rem',
   padding: '0',
+
+  '@media (max-width: 768px)': {
+    fontSize: '2rem',
+    marginTop: '1rem',
+    marginBottom: '1rem',
+  },
 })
 
 const BaseSudokuMessage = styled('h2', {
@@ -31,6 +37,11 @@ const BaseSudokuMessage = styled('h2', {
   marginTop: '2rem',
   padding: '0',
   textAlign: 'center',
+
+  '@media (max-width: 768px)': {
+    fontSize: '1.5rem',
+    marginTop: '1rem',
+  },
 })
 
 export const InvalidSudokuMessage = styled(BaseSudokuMessage, {
@@ -50,6 +61,15 @@ export const ButtonContainer = styled('div', {
   width: '22%',
   minWidth: '400px',
 
+
+  '@media (max-width: 768px)': {
+    flexDirection: 'column',
+    width: '80%',      
+    minWidth: 'auto',  
+    gap: '0.5rem',
+    marginTop: '1rem',
+    padding: '0 2rem',
+  },
 })
 
 export const DropdownStyled = styled(Dropdown, {
@@ -58,8 +78,10 @@ export const DropdownStyled = styled(Dropdown, {
   border: 'none',
   borderRadius: '8px',
   fontWeight: 'bold',
+  alignItems: 'center',
   alignContent: 'center',
   display: 'flex',
+  textAlign: 'center',
   flex: 1,
   justifyContent: 'center',
   padding: '1rem',
@@ -98,6 +120,22 @@ export const DropdownStyled = styled(Dropdown, {
       color: COLORS['main-100'],
     },
   },
+
+  '@media (max-width: 768px)': {
+    fontSize: '1rem',
+    padding: '0.75rem',
+    '& .p-dropdown-panel': {
+      fontSize: '1rem',
+      alignContent: 'center',
+      justifyContent: 'center',
+      padding: '0.75rem',
+      
+    },
+    '& .p-dropdown-item': {
+      fontSize: '1rem',
+    },
+    
+  },
 })
 
 export const ButtonStyled = styled(Button, {
@@ -131,4 +169,12 @@ export const ButtonStyled = styled(Button, {
   textTransform: 'uppercase',
   letterSpacing: '0.1rem',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+
+  // Ajuste responsivo en móviles
+  '@media (max-width: 768px)': {
+    fontSize: '1rem',
+    
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
 })

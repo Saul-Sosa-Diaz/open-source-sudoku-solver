@@ -36,7 +36,6 @@ export const Grid = ({ values, onChange, initialValues }: GridProps) => {
               }}
             >
               {isFixed ? (
-                // Celda fija → solo se muestra como texto
                 <span style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>{cellValue}</span>
               ) : (
                 <input

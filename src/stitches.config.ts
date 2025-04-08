@@ -13,6 +13,7 @@ export const globalStyles = globalCss({
   body: {
     margin: 0,
     padding: 0,
+    width: '100%',
     backgroundColor: COLORS['main-300'],
     fontFamily: 'Montserrat, sans-serif',
   },
