@@ -32,7 +32,6 @@ export const checkSudokuIsValid = async (sudoku: number[][]) => {
             if (sudoku[row][column] !== 0) {
                 const isValid = checkIfValid(sudoku, row, column)
                 if (!isValid) {
-                   console.log('sudoku not valid', row, column)
                     return false
                 }
             } 
@@ -47,7 +46,6 @@ export const checkSudokuSolution= async (sudoku: number[][]) => {
             if (sudoku[row][column] !== 0) {
                 const isValid = checkIfValid(sudoku, row, column)
                 if (!isValid) {
-                   console.log('sudoku not valid', row, column)
                     return false
                 }
             } else {
