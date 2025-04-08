@@ -1,5 +1,3 @@
-// https://www.101computing.net/sudoku-generator-algorithm/
-
 import { resolveSudoku } from './resolveSudoku'
 
 const removeNumbers = (sudoku: number[][], difficulty: number): number[][] => {
@@ -24,7 +22,7 @@ export const generateSudoku = async (
   difficulty: number,
 ): Promise<{ generatedSudoku: number[][]; resolvedSudoku: number[][] }> => {
   const emptySudoku = Array.from({ length: 9 }, () => Array(9).fill(0))
-  const resolvedSudoku = await resolveSudoku(emptySudoku)
+  const resolvedSudoku  = await resolveSudoku(emptySudoku) as number[][]
   const generatedSudoku = removeNumbers(resolvedSudoku, difficulty)
   return { generatedSudoku, resolvedSudoku }
 }
