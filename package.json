@@ -1,5 +1,5 @@
 {
-  "name": "sudoku-resolver",
+  "name": "open-source-sudoku-solver",
   "private": true,
   "version": "0.0.0",
   "type": "module",

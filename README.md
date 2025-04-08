@@ -22,7 +22,7 @@
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/Saul-Sosa-Diaz/sudoku-resolver.git
+   git clone https://github.com/Saul-Sosa-Diaz/open-source-sudoku-solver.git
    cd sudoku-generator-solver
    ```
 2. **Install Dependencies**
