@@ -38,9 +38,26 @@ export const checkSudokuIsValid = async (sudoku: number[][]) => {
             } 
         }
     }
-   
     return true
 }
+
+export const checkSudokuSolution= async (sudoku: number[][]) => {
+    for (let row = 0; row < sudoku.length; row++) {
+        for (let column = 0; column < sudoku.length; column++) {
+            if (sudoku[row][column] !== 0) {
+                const isValid = checkIfValid(sudoku, row, column)
+                if (!isValid) {
+                   console.log('sudoku not valid', row, column)
+                    return false
+                }
+            } else {
+              return false
+        }
+    }
+  }
+  return true
+}
+
 
 
 export const resolveSudoku = async (sudoku: number[][]): Promise<number[][] | boolean> => {

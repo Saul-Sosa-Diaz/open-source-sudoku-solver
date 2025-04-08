@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from 'react'
 import { generateSudoku } from './utils/generateSudoku'
 import { Footer } from './components/footer'
-import { checkSudokuIsValid, resolveSudoku } from './utils/resolveSudoku'
+import { checkSudokuIsValid, checkSudokuSolution, resolveSudoku } from './utils/resolveSudoku'
 import { triggerConfettiAnimation } from './utils/confetti'
 
 export const HomeScreen = () => {
@@ -110,7 +110,7 @@ export const HomeScreen = () => {
   const handleCheckSudoku = async () => {
     const sudokuToCheck = sudoku.map((row) => [...row])
     setHasCheckedSudoku(true)
-    const isValid = await checkSudokuIsValid(sudokuToCheck)
+    const isValid = await checkSudokuSolution(sudokuToCheck)
     if (isValid) {
       triggerConfettiAnimation()
       setIsValid(true)
