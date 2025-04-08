@@ -1,54 +1,48 @@
-# React + TypeScript + Vite
+# Open Source Sudoku Generator and Solver
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Open Source Sudoku Generator and Solver** is an open-source puzzle application that lets you effortlessly create Sudoku grids of various difficulty levels and solve existing puzzles. It’s built with flexibility, efficiency, and a user-friendly interface in mind.
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Open Source Sudoku Generator and Solver](#open-source-sudoku-generator-and-solver)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [License](#license)
+  - [Acknowledgments](#acknowledgments)
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Puzzle Generation** – Instantly create Sudoku puzzles with configurable difficulty (Easy, Medium, Hard).
+- **Puzzle Solving** – Input any valid Sudoku puzzle, and the solver will provide a complete solution.
+- **Step-by-Step Hints** – Get hints for the next move if you’re stuck.
+- **Open Source** – All code is publicly available, encouraging collaboration and transparency.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Installation
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/Saul-Sosa-Diaz/sudoku-resolver.git
+   cd sudoku-generator-solver
+   ```
+2. **Install Dependencies**
+    ```bash
+    npm install
+    ```
+3. **Run the Application**
+   ```bash
+   npm run dev
+   ```
+4. **Open in Browser**
+   Open your web browser and navigate to `http://localhost` to start using the Sudoku Generator and Solver.
+5. **Explore and Enjoy**
+    - Create Sudoku puzzles.
+    - Solve existing puzzles.
+    - Improve your Sudoku skills.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Acknowledgments
+- [Sudoku generator algorithm](https://www.101computing.net/sudoku-generator-algorithm/) the algorithm used to generate the Sudoku puzzles.
+ 
